@@ -64,15 +64,17 @@ export default function LoginScreen() {
       {/* Gold top line */}
       <View style={styles.topLine} />
 
-      <View style={styles.inner}>
-        {/* Logo */}
-        <View style={styles.logoSection}>
-          <View style={styles.logoCircle}>
-            <Text style={styles.logoText}>H</Text>
-          </View>
-          <Text style={styles.appName}>HELIOS</Text>
-          <Text style={styles.tagline}>NAVIGATE WHAT MATTERS</Text>
-        </View>
+     <View style={styles.inner}>
+  {/* Logo */}
+  <View style={styles.logoSection}>
+    <Image
+      source={require('../../assets/helios-logo.png')}
+      style={styles.logoImage}
+      resizeMode="contain"
+    />
+    <Text style={styles.appName}>HELIOS</Text>
+    <Text style={styles.tagline}>NAVIGATE WHAT MATTERS</Text>
+  </View>
 
         {/* Divider */}
         <View style={styles.divider}>
@@ -152,8 +154,7 @@ const styles = StyleSheet.create({
   inner: { flex: 1, justifyContent: 'center', paddingHorizontal: Spacing.lg, paddingBottom: Spacing.xl },
 
   logoSection: { alignItems: 'center', marginBottom: Spacing.lg },
-  logoCircle: { width: 80, height: 80, borderRadius: 40, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center', marginBottom: Spacing.sm, borderWidth: 2, borderColor: Colors.accent + '44' },
-  logoText: { fontSize: 36, fontWeight: '700', color: Colors.accent },
+logoImage: { width: 120, height: 120, marginBottom: Spacing.sm },  logoText: { fontSize: 36, fontWeight: '700', color: Colors.accent },
   appName: { fontSize: Typography.xxxl, fontWeight: '700', color: Colors.text, letterSpacing: 4 },
   tagline: { fontSize: Typography.xs, color: Colors.textDim, letterSpacing: 3, marginTop: 4 },
 
