@@ -36,7 +36,8 @@ function MemberCard({ card, isGuest }) {
       <View style={styles.holoLayer1} />
       <View style={styles.holoLayer2} />
       <View style={styles.holoLayer3} />
-      <View style={styles.cardGlow} />
+<View style={styles.holoShimmer} />
+<View style={styles.cardGlow} />
 
       <View style={styles.cardContent}>
         {/* Top row */}
@@ -339,37 +340,53 @@ const styles = StyleSheet.create({
   scrollContent: { padding: Spacing.lg },
 
   memberCard: {
-    borderRadius: Radius.lg,
-    borderWidth: 1.5,
-    borderColor: Colors.accent,
-    overflow: 'hidden',
-    marginBottom: Spacing.md,
-    backgroundColor: Colors.primary,
-    ...Shadows.lg,
-  },
-  guestCard: {
-    borderColor: Colors.info,
-    backgroundColor: '#0E2040',
-  },
-  holoLayer1: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: Colors.accent, opacity: 0.04 },
-  holoLayer2: { position: 'absolute', top: -60, left: -60, width: 180, height: 180, borderRadius: 90, backgroundColor: Colors.accent, opacity: 0.07 },
-  holoLayer3: { position: 'absolute', bottom: -40, right: -40, width: 120, height: 120, borderRadius: 60, backgroundColor: '#60A5FA', opacity: 0.05 },
-  cardGlow:   { position: 'absolute', top: -40, right: -40, width: 150, height: 150, borderRadius: 75, backgroundColor: Colors.accent, opacity: 0.08 },
-
-  cardContent:   { flex: 1, padding: Spacing.md, justifyContent: 'space-between' },
-  cardTopRow:    { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  cardLogo:      { width: 44, height: 44 },
-  cardBrand:     { fontSize: Typography.lg, fontWeight: '800', color: Colors.accent, letterSpacing: 3 },
-  cardSubBrand:  { fontSize: Typography.xs, color: Colors.accent + 'AA', letterSpacing: 2, marginTop: 2, textAlign: 'right' },
-
-  cardNumberBox: { backgroundColor: 'rgba(255,255,255,0.92)', borderRadius: Radius.sm, padding: Spacing.sm, alignItems: 'center' },
-  cardNumber:    { fontSize: Typography.xl, fontWeight: '700', color: Colors.primary, letterSpacing: 4, fontFamily: 'monospace' },
-  cardNumberSub: { fontSize: Typography.xs, color: '#888', marginTop: 2 },
-
-  cardBottomRow:  { flexDirection: 'row', justifyContent: 'space-between' },
-  cardFieldLabel: { fontSize: 9, color: Colors.accent + 'AA', letterSpacing: 1, textTransform: 'uppercase' },
-  cardFieldValue: { fontSize: Typography.sm, fontWeight: '600', color: Colors.text, marginTop: 2 },
-
+  borderRadius: Radius.lg,
+  borderWidth: 1.5,
+  borderColor: Colors.accent,
+  overflow: 'hidden',
+  marginBottom: Spacing.md,
+  backgroundColor: '#0D1F35',
+  ...Shadows.lg,
+},
+guestCard: {
+  borderColor: Colors.info,
+  backgroundColor: '#0A1828',
+},
+holoLayer1: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: Colors.accent, opacity: 0.03 },
+holoLayer2: { position: 'absolute', top: -60, left: -60, width: 180, height: 180, borderRadius: 90, backgroundColor: Colors.accent, opacity: 0.07 },
+holoLayer3: { position: 'absolute', bottom: -40, right: -40, width: 120, height: 120, borderRadius: 60, backgroundColor: '#60A5FA', opacity: 0.05 },
+// Diagonal shimmer stripe
+holoShimmer: {
+  position: 'absolute',
+  top: -30, left: -20,
+  width: 60, height: 300,
+  backgroundColor: 'rgba(255,255,255,0.06)',
+  transform: [{ rotate: '35deg' }],
+},
+cardGlow: { position: 'absolute', top: -40, right: -40, width: 150, height: 150, borderRadius: 75, backgroundColor: Colors.accent, opacity: 0.08 },
+cardContent:   { flex: 1, padding: Spacing.md, justifyContent: 'space-between' },
+cardTopRow:    { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+cardLogo:      { width: 44, height: 44 },
+cardBrand:     { fontSize: Typography.lg, fontWeight: '800', color: Colors.accent, letterSpacing: 3 },
+cardSubBrand:  { fontSize: Typography.xs, color: Colors.accent + 'AA', letterSpacing: 2, marginTop: 2, textAlign: 'right' },
+cardChip: {
+  width: 32, height: 24, borderRadius: 4,
+  backgroundColor: '#B8944F',
+  borderWidth: 1, borderColor: '#D4AE6B',
+  marginBottom: 4,
+  shadowColor: '#B8944F', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 4,
+},
+cardNumberBox: {
+  backgroundColor: 'rgba(20,40,65,0.85)',
+  borderRadius: Radius.sm, padding: Spacing.sm,
+  alignItems: 'center',
+  borderWidth: 1, borderColor: Colors.accent + '33',
+},
+cardNumber:    { fontSize: Typography.xl, fontWeight: '700', color: Colors.accent, letterSpacing: 4, fontFamily: 'monospace' },
+cardNumberSub: { fontSize: Typography.xs, color: Colors.textDim, marginTop: 2 },
+cardBottomRow:  { flexDirection: 'row', justifyContent: 'space-between' },
+cardFieldLabel: { fontSize: 9, color: Colors.accent + 'AA', letterSpacing: 1, textTransform: 'uppercase' },
+cardFieldValue: { fontSize: Typography.sm, fontWeight: '600', color: Colors.text, marginTop: 2 },
   zonesRow:  { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.md },
   zoneBadge: { backgroundColor: Colors.primary + '22', borderRadius: Radius.full, paddingHorizontal: Spacing.sm, paddingVertical: 4, borderWidth: 1, borderColor: Colors.primary },
   zoneText:  { fontSize: Typography.xs, color: Colors.accent, fontWeight: '600' },
