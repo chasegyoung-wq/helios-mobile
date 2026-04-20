@@ -133,7 +133,7 @@ export default function SocialScreen() {
 
   async function loadFeed() {
     try {
-      const data = await api.get('/social/posts?limit=20');
+      const data = await api.get('/social/feed?limit=20');
       setPosts(Array.isArray(data) ? data : data?.posts || []);
     } catch (err) {
       if (err.message === 'SESSION_EXPIRED') logout();
@@ -155,7 +155,7 @@ export default function SocialScreen() {
 
   async function handleComment(postId, content) {
     try {
-      await api.post(`/social/posts/${postId}/comments`, { content });
+      await api.post('/social/posts', ...);
       loadFeed();
     } catch {}
   }
