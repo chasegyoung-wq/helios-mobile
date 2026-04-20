@@ -160,6 +160,20 @@ export default function HomeScreen() {
               <Text style={styles.emptyText}>No upcoming hotel stays</Text>
             )}
           </SectionCard>
+          {/* Upcoming Regattas */}
+<SectionCard title="Upcoming Regattas" onPress={() => router.push('/(tabs)/bookings')}>
+  {(dashboard?.regattas || []).length > 0 ? (dashboard.regattas).map(r => (
+    <View key={r.id} style={styles.listRow}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.listTitle}>{r.name}</Text>
+        <Text style={styles.listSub}>{fmt(r.start_date)} · {r.location}</Text>
+        <Text style={styles.listSub}>⛵ {r.boat_name} · {r.entry_status}</Text>
+      </View>
+    </View>
+  )) : (
+    <Text style={styles.emptyText}>No upcoming regattas</Text>
+  )}
+</SectionCard>
 
           {/* My vessel */}
           {vessel && (
