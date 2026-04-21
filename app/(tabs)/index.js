@@ -136,6 +136,7 @@ export default function HomeScreen() {
               { label: 'Bookings',    emoji: '📅', route: '/(tabs)/bookings' },
               { label: 'My Card',     emoji: '🔑', route: '/(tabs)/card' },
               { label: 'Social',      emoji: '💬', route: '/(tabs)/social' },
+              { label: 'Dock Cart', emoji: '🛒', route: '/(tabs)/dock-cart' },
             ].map(a => (
               <TouchableOpacity key={a.label} style={styles.quickAction} onPress={() => router.push(a.route)}>
                 <Text style={styles.quickActionEmoji}>{a.emoji}</Text>

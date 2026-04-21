@@ -61,6 +61,13 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => <TabIcon emoji="🔑" focused={focused} />,
         }}
       />
+      <Tabs.Screen
+  name="dock-cart"
+  options={{
+    title: 'Dock Cart',
+    tabBarIcon: ({ focused }) => <TabIcon emoji="🛒" focused={focused} />,
+  }}
+/>
     </Tabs>
   );
 }
