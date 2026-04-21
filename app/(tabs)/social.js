@@ -155,7 +155,7 @@ export default function SocialScreen() {
 
   async function handleComment(postId, content) {
     try {
-      await api.post('/social/posts', ...);
+      await api.post(`/social/posts/${postId}/comments`, { content });
       loadFeed();
     } catch {}
   }
