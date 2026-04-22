@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../lib/auth-store';
 import { api } from '../../lib/api';
+import { FeedbackBanner } from '../../lib/feedback-banner';
 import { Colors, Typography, Spacing, Radius, Shadows } from '../../lib/theme';
 
 function StatCard({ label, value, color, sub }) {
@@ -127,22 +128,6 @@ export default function HomeScreen() {
               color={Colors.success}
               sub="Active"
             />
-          </View>
-
-          {/* Quick actions */}
-          <View style={styles.quickActions}>
-            {[
-              { label: 'Pay Bill',    emoji: '💳', route: '/(tabs)/bill' },
-              { label: 'Bookings',    emoji: '📅', route: '/(tabs)/bookings' },
-              { label: 'My Card',     emoji: '🔑', route: '/(tabs)/card' },
-              { label: 'Social',      emoji: '💬', route: '/(tabs)/social' },
-              { label: 'Dock Cart', emoji: '🛒', route: '/(tabs)/dock-cart' },
-            ].map(a => (
-              <TouchableOpacity key={a.label} style={styles.quickAction} onPress={() => router.push(a.route)}>
-                <Text style={styles.quickActionEmoji}>{a.emoji}</Text>
-                <Text style={styles.quickActionLabel}>{a.label}</Text>
-              </TouchableOpacity>
-            ))}
           </View>
 
           {/* Upcoming reservations */}

@@ -10,9 +10,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { useRouter } from 'expo-router';
 import { api } from '../../lib/api';
 import { useAuthStore } from '../../lib/auth-store';
 import { Colors, Typography, Spacing, Radius, Shadows } from '../../lib/theme';
+import { BottomNav } from '../../lib/BottomNav';
 
 function fmtTime(mins) {
   if (mins < 60) return `${Math.round(mins)}m`;
@@ -104,6 +106,7 @@ export default function DockCartScreen() {
         <View style={styles.loadingContainer}>
           <ActivityIndicator color={Colors.accent} size="large" />
         </View>
+      <BottomNav />
       </SafeAreaView>
     );
   }
@@ -189,6 +192,7 @@ export default function DockCartScreen() {
             }
           </TouchableOpacity>
         </ScrollView>
+      <BottomNav />
       </SafeAreaView>
     );
   }
@@ -270,6 +274,7 @@ export default function DockCartScreen() {
           <Text style={styles.scanBtnText}>Scan Cart QR Code</Text>
         </TouchableOpacity>
       </ScrollView>
+    <BottomNav />
     </SafeAreaView>
   );
 }

@@ -1,9 +1,4 @@
-// ============================================================
-// HELIOS MOBILE — SOCIAL FEED SCREEN
-// app/(tabs)/social.js
-// ============================================================
-
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View, Text, ScrollView, StyleSheet, TouchableOpacity,
   RefreshControl, ActivityIndicator, TextInput, Alert,
@@ -13,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { api } from '../../lib/api';
 import { useAuthStore } from '../../lib/auth-store';
 import { Colors, Typography, Spacing, Radius } from '../../lib/theme';
+import { BottomNav } from '../../lib/BottomNav';
 
 function fmtTime(ts) {
   if (!ts) return '';
@@ -20,17 +16,17 @@ function fmtTime(ts) {
     const d = new Date(ts);
     const now = new Date();
     const diff = Math.floor((now - d) / 1000);
-    if (diff < 60)   return 'Just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400)return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 60)    return 'Just now';
+    if (diff < 3600)  return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   } catch { return ''; }
 }
 
 function PostCard({ post, onReact, onComment }) {
   const [showComments, setShowComments] = useState(false);
-  const [comment, setComment] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+  const [comment,      setComment]      = useState('');
+  const [submitting,   setSubmitting]   = useState(false);
 
   async function submitComment() {
     if (!comment.trim()) return;
@@ -45,12 +41,9 @@ function PostCard({ post, onReact, onComment }) {
 
   return (
     <View style={styles.postCard}>
-      {/* Author */}
       <View style={styles.postHeader}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>
-            {post.first_name?.[0]}{post.last_name?.[0]}
-          </Text>
+          <Text style={styles.avatarText}>{post.first_name?.[0]}{post.last_name?.[0]}</Text>
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.authorName}>{post.first_name} {post.last_name}</Text>
@@ -63,11 +56,9 @@ function PostCard({ post, onReact, onComment }) {
         )}
       </View>
 
-      {/* Content */}
       {post.title && <Text style={styles.postTitle}>{post.title}</Text>}
       <Text style={styles.postContent}>{post.content}</Text>
 
-      {/* Reactions */}
       <View style={styles.reactionsRow}>
         {['👍', '❤️', '⚓', '🎉'].map(emoji => {
           const count = post.reactions?.[emoji] || 0;
@@ -83,7 +74,6 @@ function PostCard({ post, onReact, onComment }) {
         </TouchableOpacity>
       </View>
 
-      {/* Comments */}
       {showComments && (
         <View style={styles.commentsSection}>
           {(post.comments || []).map(c => (
@@ -97,8 +87,6 @@ function PostCard({ post, onReact, onComment }) {
               </View>
             </View>
           ))}
-
-          {/* Add comment */}
           <View style={styles.commentInputRow}>
             <TextInput
               style={styles.commentInput}
@@ -123,13 +111,13 @@ function PostCard({ post, onReact, onComment }) {
 }
 
 export default function SocialScreen() {
-  const { user, logout } = useAuthStore();
-  const [posts,      setPosts]      = useState([]);
-  const [loading,    setLoading]    = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [newPost,    setNewPost]    = useState('');
-  const [posting,    setPosting]    = useState(false);
-  const [showCompose,setShowCompose]= useState(false);
+  const { logout } = useAuthStore();
+  const [posts,       setPosts]       = useState([]);
+  const [loading,     setLoading]     = useState(true);
+  const [refreshing,  setRefreshing]  = useState(false);
+  const [newPost,     setNewPost]     = useState('');
+  const [posting,     setPosting]     = useState(false);
+  const [showCompose, setShowCompose] = useState(false);
 
   async function loadFeed() {
     try {
@@ -168,7 +156,7 @@ export default function SocialScreen() {
       setNewPost('');
       setShowCompose(false);
       loadFeed();
-    } catch (err) {
+    } catch {
       Alert.alert('Error', 'Failed to post. Please try again.');
     } finally {
       setPosting(false);
@@ -217,6 +205,7 @@ export default function SocialScreen() {
         </KeyboardAvoidingView>
       )}
 
+      {/* Feed */}
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator color={Colors.accent} size="large" />
@@ -245,18 +234,20 @@ export default function SocialScreen() {
           <View style={{ height: Spacing.xl }} />
         </ScrollView>
       )}
+
+      <BottomNav />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container:  { flex: 1, backgroundColor: Colors.bg },
-  header:     { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: Spacing.lg, paddingVertical: Spacing.md, borderBottomWidth: 1, borderBottomColor: Colors.border },
-  headerTitle:{ fontSize: Typography.xl, fontWeight: '700', color: Colors.text },
-  composeBtn: { backgroundColor: Colors.accent + '22', borderRadius: Radius.full, paddingHorizontal: Spacing.md, paddingVertical: 6, borderWidth: 1, borderColor: Colors.accent + '44' },
+  container:      { flex: 1, backgroundColor: Colors.bg },
+  header:         { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: Spacing.lg, paddingVertical: Spacing.md, borderBottomWidth: 1, borderBottomColor: Colors.border },
+  headerTitle:    { fontSize: Typography.xl, fontWeight: '700', color: Colors.text },
+  composeBtn:     { backgroundColor: Colors.accent + '22', borderRadius: Radius.full, paddingHorizontal: Spacing.md, paddingVertical: 6, borderWidth: 1, borderColor: Colors.accent + '44' },
   composeBtnText: { color: Colors.accent, fontSize: Typography.sm, fontWeight: '600' },
   loadingContainer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  scrollContent: { padding: Spacing.md },
+  scrollContent:  { padding: Spacing.md },
 
   composeCard:    { margin: Spacing.md, backgroundColor: Colors.card, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.border, padding: Spacing.md },
   composeInput:   { color: Colors.text, fontSize: Typography.md, minHeight: 80, textAlignVertical: 'top' },
@@ -265,34 +256,34 @@ const styles = StyleSheet.create({
   postBtn:        { backgroundColor: Colors.accent, borderRadius: Radius.full, paddingHorizontal: Spacing.md, paddingVertical: 6 },
   postBtnText:    { color: '#fff', fontSize: Typography.sm, fontWeight: '700' },
 
-  postCard:   { backgroundColor: Colors.card, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.border, padding: Spacing.md, marginBottom: Spacing.md },
-  postHeader: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginBottom: Spacing.sm },
-  avatar:     { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
-  avatarText: { fontSize: Typography.sm, fontWeight: '700', color: Colors.accent },
-  authorName: { fontSize: Typography.sm, fontWeight: '700', color: Colors.text },
-  postTime:   { fontSize: Typography.xs, color: Colors.textDim },
-  categoryBadge: { backgroundColor: Colors.primary + '22', borderRadius: Radius.full, paddingHorizontal: 8, paddingVertical: 3 },
-  categoryText:  { fontSize: Typography.xs, color: Colors.accent, fontWeight: '600' },
-  postTitle:  { fontSize: Typography.md, fontWeight: '700', color: Colors.text, marginBottom: 4 },
-  postContent:{ fontSize: Typography.sm, color: Colors.textSoft, lineHeight: 20, marginBottom: Spacing.sm },
+  postCard:       { backgroundColor: Colors.card, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.border, padding: Spacing.md, marginBottom: Spacing.md },
+  postHeader:     { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginBottom: Spacing.sm },
+  avatar:         { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
+  avatarText:     { fontSize: Typography.sm, fontWeight: '700', color: Colors.accent },
+  authorName:     { fontSize: Typography.sm, fontWeight: '700', color: Colors.text },
+  postTime:       { fontSize: Typography.xs, color: Colors.textDim },
+  categoryBadge:  { backgroundColor: Colors.primary + '22', borderRadius: Radius.full, paddingHorizontal: 8, paddingVertical: 3 },
+  categoryText:   { fontSize: Typography.xs, color: Colors.accent, fontWeight: '600' },
+  postTitle:      { fontSize: Typography.md, fontWeight: '700', color: Colors.text, marginBottom: 4 },
+  postContent:    { fontSize: Typography.sm, color: Colors.textSoft, lineHeight: 20, marginBottom: Spacing.sm },
 
-  reactionsRow:   { flexDirection: 'row', gap: Spacing.sm, alignItems: 'center', flexWrap: 'wrap' },
-  reactionBtn:    { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: Colors.bg, borderRadius: Radius.full, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: Colors.border },
-  reactionEmoji:  { fontSize: 16 },
-  reactionCount:  { fontSize: Typography.xs, color: Colors.textMid, fontWeight: '600' },
-  commentToggle:  { marginLeft: 'auto' },
+  reactionsRow:      { flexDirection: 'row', gap: Spacing.sm, alignItems: 'center', flexWrap: 'wrap' },
+  reactionBtn:       { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: Colors.bg, borderRadius: Radius.full, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: Colors.border },
+  reactionEmoji:     { fontSize: 16 },
+  reactionCount:     { fontSize: Typography.xs, color: Colors.textMid, fontWeight: '600' },
+  commentToggle:     { marginLeft: 'auto' },
   commentToggleText: { fontSize: Typography.sm, color: Colors.textMid },
 
   commentsSection: { marginTop: Spacing.sm, borderTopWidth: 1, borderTopColor: Colors.border, paddingTop: Spacing.sm },
-  commentRow:     { flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.sm },
-  commentAvatar:  { width: 28, height: 28, borderRadius: 14 },
-  commentBubble:  { flex: 1, backgroundColor: Colors.bg, borderRadius: Radius.sm, padding: Spacing.sm },
-  commentAuthor:  { fontSize: Typography.xs, fontWeight: '700', color: Colors.accent, marginBottom: 2 },
-  commentText:    { fontSize: Typography.xs, color: Colors.textSoft },
-  commentInputRow:{ flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.sm },
-  commentInput:   { flex: 1, backgroundColor: Colors.bg, borderRadius: Radius.sm, borderWidth: 1, borderColor: Colors.border, padding: Spacing.sm, color: Colors.text, fontSize: Typography.sm },
-  sendBtn:        { backgroundColor: Colors.accent, borderRadius: Radius.sm, width: 36, alignItems: 'center', justifyContent: 'center' },
-  sendBtnText:    { color: '#fff', fontSize: Typography.lg, fontWeight: '700' },
+  commentRow:      { flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.sm },
+  commentAvatar:   { width: 28, height: 28, borderRadius: 14 },
+  commentBubble:   { flex: 1, backgroundColor: Colors.bg, borderRadius: Radius.sm, padding: Spacing.sm },
+  commentAuthor:   { fontSize: Typography.xs, fontWeight: '700', color: Colors.accent, marginBottom: 2 },
+  commentText:     { fontSize: Typography.xs, color: Colors.textSoft },
+  commentInputRow: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.sm },
+  commentInput:    { flex: 1, backgroundColor: Colors.bg, borderRadius: Radius.sm, borderWidth: 1, borderColor: Colors.border, padding: Spacing.sm, color: Colors.text, fontSize: Typography.sm },
+  sendBtn:         { backgroundColor: Colors.accent, borderRadius: Radius.sm, width: 36, alignItems: 'center', justifyContent: 'center' },
+  sendBtnText:     { color: '#fff', fontSize: Typography.lg, fontWeight: '700' },
 
   emptyState: { alignItems: 'center', paddingVertical: Spacing.xxl },
   emptyEmoji: { fontSize: 48, marginBottom: Spacing.md },
