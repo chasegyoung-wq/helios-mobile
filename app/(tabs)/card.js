@@ -42,12 +42,22 @@ function MemberCard({ card, isGuest }) {
       <View style={styles.cardContent}>
         {/* Top row */}
         <View style={styles.cardTopRow}>
-          <View>
+          <View style={styles.cardLeft}>
             <Image
               source={require('../../assets/helios-logo.png')}
               style={styles.cardLogo}
               resizeMode="contain"
             />
+            <View style={styles.cardAvatar}>
+              {card.profile_photo ? (
+                <Image source={{ uri: card.profile_photo }} style={styles.cardAvatarImage} />
+              ) : (
+                <View style={styles.silhouetteWrap}>
+                  <View style={styles.silhouetteHead} />
+                  <View style={styles.silhouetteBody} />
+                </View>
+              )}
+            </View>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.cardBrand}>HELIOS</Text>
@@ -367,6 +377,32 @@ cardGlow: { position: 'absolute', top: -40, right: -40, width: 150, height: 150,
 cardContent:   { flex: 1, padding: Spacing.md, justifyContent: 'space-between' },
 cardTopRow:    { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
 cardLogo:      { width: 44, height: 44 },
+cardLeft:      { flexDirection: 'row', alignItems: 'center', gap: 12 },
+cardAvatar: {
+  width: 44, height: 44, borderRadius: 22,
+  backgroundColor: 'rgba(245,185,66,0.18)',
+  borderWidth: 1.5,
+  borderColor: 'rgba(245,185,66,0.6)',
+  alignItems: 'center', justifyContent: 'center',
+  overflow: 'hidden',
+},
+cardAvatarImage: { width: '100%', height: '100%' },
+silhouetteWrap: {
+  width: '100%', height: '100%',
+  alignItems: 'center', justifyContent: 'flex-end',
+  overflow: 'hidden',
+},
+silhouetteHead: {
+  width: 16, height: 16, borderRadius: 8,
+  backgroundColor: 'rgba(245,185,66,0.55)',
+  marginBottom: 2,
+},
+silhouetteBody: {
+  width: 28, height: 18,
+  borderTopLeftRadius: 14, borderTopRightRadius: 14,
+  backgroundColor: 'rgba(245,185,66,0.55)',
+  marginBottom: -2,
+},
 cardBrand:     { fontSize: Typography.lg, fontWeight: '800', color: Colors.accent, letterSpacing: 3 },
 cardSubBrand:  { fontSize: Typography.xs, color: Colors.accent + 'AA', letterSpacing: 2, marginTop: 2, textAlign: 'right' },
 cardChip: {
